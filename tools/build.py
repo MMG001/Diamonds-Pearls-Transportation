@@ -3,6 +3,11 @@
 import json, os, sys, html, datetime
 sys.path.insert(0, os.path.dirname(__file__))
 from content import *  # noqa
+import schema as S
+import hashlib
+
+def vhash(rel):
+    return hashlib.sha256(open(os.path.join(ROOT, rel), "rb").read()).hexdigest()[:10]
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 TODAY = datetime.date.today().isoformat()
@@ -64,26 +69,19 @@ def footer():
   <div class="wrap foot-base"><p>&copy; {datetime.date.today().year} {e(BRAND)}. All rights reserved.</p><p>Serving Minneapolis &middot; St. Paul &middot; the Twin Cities Metro</p></div>
 </footer>'''
 
-def business_schema():
-    return {
-        "@type": "LocalBusiness", "@id": SITE_URL + "/#business", "name": BRAND,
-        "url": SITE_URL + "/", "logo": SITE_URL + "/assets/img/logo-520.png", "image": SITE_URL + "/assets/img/hero-executive-1920.webp",
-        "description": "Luxury limousine and chauffeured car service in Minneapolis, St. Paul and the Twin Cities.",
-        "areaServed": [{"@type": "City", "name": f'{a["name"]}, MN'} for a in AREAS],
-        **({"telephone": PHONE} if PHONE else {}), **({"email": EMAIL} if EMAIL else {}),
-    }
-
-def page(path, title, desc, body, crumbs=None, schema=None, og_img="hero-executive"):
+def page(path, title, desc, body, crumbs=None, schema=None, og_img="hero-executive", wp_type="WebPage", main=None, spatial=None):
     url = SITE_URL + path
-    graph = [business_schema(), {"@type": "WebPage", "@id": url, "url": url, "name": title, "description": desc, "isPartOf": {"@id": SITE_URL + "/#website"}},
-             {"@type": "WebSite", "@id": SITE_URL + "/#website", "url": SITE_URL + "/", "name": BRAND}]
+    extra = []
+    for n in schema or []:
+        if n.get("@type") == "FAQPage" and "@id" not in n:
+            n = {"@type": "FAQPage", "@id": f"{url}#faq", "isPartOf": {"@id": f"{url}#webpage"}, "mainEntity": n["mainEntity"]}
+        extra.append(n)
+    ld = S.graph(path if path != "/404.html" else path, title, desc, crumbs, extra, wp_type=wp_type, main=main, spatial=spatial, og_img=og_img)
     crumb_html = ""
     if crumbs:
         items = [("Home", "/")] + crumbs
-        graph.append({"@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": i + 1, "name": n, "item": SITE_URL + u} for i, (n, u) in enumerate(items)]})
-        crumb_html = f'<nav class="crumbs wrap{" on-hero" if body.lstrip().startswith("<section class=\"hero") else ""}" aria-label="Breadcrumb"><ol>' + "".join(
+        crumb_html = f'<nav class="crumbs wrap{" on-hero" if body.lstrip().startswith('<section class="hero') else ""}" aria-label="Breadcrumb"><ol>' + "".join(
             (f'<li><a href="{u}">{e(n)}</a></li>' if i < len(items) - 1 else f'<li aria-current="page">{e(n)}</li>') for i, (n, u) in enumerate(items)) + '</ol></nav>'
-    graph += schema or []
     doc = f'''<!doctype html>
 <html lang="en">
 <head>
@@ -101,8 +99,8 @@ def page(path, title, desc, body, crumbs=None, schema=None, og_img="hero-executi
 <link rel="icon" href="/favicon-32.png" sizes="32x32"><link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/site.css?v={TODAY}">
-<script type="application/ld+json">{json.dumps({"@context": "https://schema.org", "@graph": graph}, ensure_ascii=False)}</script>
+<link rel="stylesheet" href="/assets/css/site.css?v={vhash("assets/css/site.css")}">
+<script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
@@ -112,12 +110,14 @@ def page(path, title, desc, body, crumbs=None, schema=None, og_img="hero-executi
 {body}
 </main>
 {footer()}
-<script src="/assets/js/site.js?v={TODAY}" defer></script>
+<script src="/assets/js/site.js?v={vhash("assets/js/site.js")}" defer></script>
 </body>
 </html>'''
     out = os.path.join(ROOT, path.strip("/"), "index.html") if path != "/" else os.path.join(ROOT, "index.html")
     if path == "/404.html":
         out = os.path.join(ROOT, "404.html")
+    if path != "/404.html":
+        S.check(path, doc, title, desc, url)
     os.makedirs(os.path.dirname(out), exist_ok=True)
     with open(out, "w", encoding="utf-8") as f:
         f.write(doc)
@@ -164,10 +164,6 @@ def split(title, paras, image, alt, points=None, flip=False, eyebrow=""):
   <div class="split-text">{f'<p class="eyebrow">{e(eyebrow)}</p>' if eyebrow else ''}<h2>{e(title)}</h2>{ps}{checklist(points) if points else ''}</div>
 </div></section>'''
 
-def service_schema(name, desc, path):
-    return {"@type": "Service", "name": name, "description": desc, "serviceType": name, "url": SITE_URL + path,
-            "provider": {"@id": SITE_URL + "/#business"}, "areaServed": {"@type": "AdministrativeArea", "name": "Minneapolis-St. Paul metropolitan area"}}
-
 STANDARD = [
     ("Professional Chauffeurs", "Courteous, discreet and professionally attired drivers who know the Twin Cities."),
     ("Always On Time", "Routes planned around traffic, weather and events, with flight tracking on every airport pickup."),
@@ -207,7 +203,7 @@ def build_home():
     body += faq_html + cta()
     page("/", "Limo Service Minneapolis MN | Luxury Car Service Twin Cities | Diamond & Pearls",
          "Luxury limo and chauffeured car service in Minneapolis and St. Paul. Airport transportation, corporate travel, weddings, special events and tours across the Twin Cities.",
-         body, schema=[faq_schema])
+         body, schema=[faq_schema] + [S.card_service(f'/{x["slug"]}/', x["name"], x["lead"], x["slug"]) for x in SERVICES])
 
 def build_services_hub():
     body = hero("Our Chauffeured Transportation Services", "Luxury ground transportation for every reason to travel in Minneapolis, St. Paul and the Twin Cities.", "chauffeur-team", "Services", "Chauffeurs standing beside a luxury sedan")
@@ -215,7 +211,8 @@ def build_services_hub():
     body += standard_block() + cta()
     page("/services/", "Limo & Car Services Minneapolis | Chauffeured Transportation Services",
          "Explore our Minneapolis limo and car services: airport transportation, corporate travel, weddings, special events, tours and group charters.",
-         body, crumbs=[("Services", "/services/")])
+         body, crumbs=[("Services", "/services/")], wp_type="CollectionPage", main={"@id": SITE_URL + "/services/#list"},
+         schema=[S.item_list("/services/", [(x["name"], f'/{x["slug"]}/') for x in SERVICES])] + [S.card_service(f'/{x["slug"]}/', x["name"], x["lead"], x["slug"]) for x in SERVICES])
 
 def build_service(s):
     path = f'/{s["slug"]}/'
@@ -237,7 +234,15 @@ def build_service(s):
     body += f'<section class="section"><div class="wrap center"><h2>Where We Provide {e(s["name"])}</h2>{chips([(f"/service-areas/{a["slug"]}/", a["name"]) for a in AREAS])}</div></section>'
     fh, fs = faq_block(s["faqs"])
     body += fh + cta()
-    page(path, s["title"], s["desc"], body, crumbs=[("Services", "/services/"), (s["name"], path)], schema=[fs, service_schema(s["name"], s["desc"], path)], og_img=s["img"])
+    kids = []
+    if s["slug"] == "special-events":
+        kids = [(f'/special-events/{x["slug"]}/', x["name"], x["lead"], x["slug"]) for x in EVENTS]
+    elif s["slug"] == "tours":
+        kids = [(f'/tours/{x["slug"]}/', x["name"], x["lead"], x["slug"]) for x in TOURS]
+    elif s["slug"] == "airport-transportation":
+        kids = [(f'/airports/{a["slug"]}/', f'{a["name"]} ({a["code"]})', a["lead"], "airport") for a in AIRPORTS]
+    nodes = [fs, S.full_service(path, s["name"], s["lead"], s["slug"], sub_paths=[k[0] for k in kids])] + [S.card_service(*k) for k in kids]
+    page(path, s["title"], s["desc"], body, crumbs=[("Services", "/services/"), (s["name"], path)], schema=nodes, og_img=s["img"], main=S.sid(path))
 
 def build_child(x, parent_slug, parent_name):
     path = f'/{parent_slug}/{x["slug"]}/'
@@ -247,14 +252,18 @@ def build_child(x, parent_slug, parent_name):
     body += f'<section class="section tint"><div class="wrap center"><h2>More {e(parent_name)}</h2>{chips([(f"/{parent_slug}/{y["slug"]}/", y["name"]) for y in siblings if y is not x])}</div></section>'
     fh, fs = faq_block(x["faqs"])
     body += fh + cta()
-    page(path, x["title"], x["desc"], body, crumbs=[(parent_name, f"/{parent_slug}/"), (x["name"], path)], schema=[fs, service_schema(x["name"], x["desc"], path)], og_img=x["img"])
+    sib = [(f"/{parent_slug}/{y['slug']}/", y["name"]) for y in siblings if y is not x]
+    nodes = [fs, S.full_service(path, x["name"], x["lead"], x["slug"], related_paths=[f"/{parent_slug}/"] + [u for u, _ in sib])]
+    nodes += [{"@type": "Service", "@id": SITE_URL + u + "#service", "name": n, "url": SITE_URL + u, "provider": S.BIZ} for u, n in sib]
+    page(path, x["title"], x["desc"], body, crumbs=[(parent_name, f"/{parent_slug}/"), (x["name"], path)], schema=nodes, og_img=x["img"], main=S.sid(path))
 
 def build_airports():
     body = hero("Airport Car Service Across the Twin Cities", "Commercial and private aviation transfers with flight tracking and professional chauffeurs.", "private-jet", "Airports", "Luxury car parked beside a private jet")
     body += f'<section class="section"><div class="wrap">{cards([(f"/airports/{a["slug"]}/", f"{a["name"]} ({a["code"]})", a["lead"], None) for a in AIRPORTS], "cards text-cards")}</div></section>' + cta()
     page("/airports/", "Airport Car Service Minneapolis | MSP, STP, FCM & ANE Transportation",
          "Chauffeured airport transportation at MSP, St. Paul Downtown (STP), Flying Cloud (FCM) and Anoka County-Blaine (ANE) airports.",
-         body, crumbs=[("Airports", "/airports/")], og_img="private-jet")
+         body, crumbs=[("Airports", "/airports/")], og_img="private-jet", wp_type="CollectionPage", main={"@id": SITE_URL + "/airports/#list"},
+         schema=[S.item_list("/airports/", [(f'{a["name"]} ({a["code"]})', f'/airports/{a["slug"]}/') for a in AIRPORTS])] + [S.card_service(f'/airports/{a["slug"]}/', f'{a["name"]} ({a["code"]})', a["lead"], "airport") for a in AIRPORTS])
     for a in AIRPORTS:
         path = f'/airports/{a["slug"]}/'
         body = hero(a["h1"], a["lead"], a["img"], f'{a["code"]} Airport', a["name"])
@@ -264,7 +273,10 @@ def build_airports():
                 (f"How do I book a ride to or from {a['code']}?", "Request a quote online with your flight details, pickup address and number of passengers. We will confirm your ride and send your chauffeur's details before pickup.")]
         fh, fs = faq_block(faqs)
         body += fh + cta()
-        page(path, a["title"], a["desc"], body, crumbs=[("Airports", "/airports/"), (a["code"], path)], schema=[fs, service_schema(f'{a["code"]} Airport Transportation', a["desc"], path)], og_img=a["img"])
+        oth = [b for b in AIRPORTS if b is not a]
+        nodes = [fs, S.full_service(path, a["h1"], a["lead"], "airport", related_paths=["/airport-transportation/"] + [f'/airports/{b["slug"]}/' for b in oth])]
+        nodes += [{"@type": "Service", "@id": f'{SITE_URL}/airports/{b["slug"]}/#service', "name": f'{b["name"]} ({b["code"]})', "url": f'{SITE_URL}/airports/{b["slug"]}/', "provider": S.BIZ} for b in oth]
+        page(path, a["title"], a["desc"], body, crumbs=[("Airports", "/airports/"), (a["code"], path)], schema=nodes, og_img=a["img"], main=S.sid(path))
 
 def build_areas():
     body = hero("Service Areas", "Luxury chauffeured transportation throughout Minneapolis, St. Paul, the Twin Cities suburbs and greater Minnesota.", "hotel-arrival", "Where We Drive", "Chauffeur waiting at a hotel entrance")
@@ -274,13 +286,14 @@ def build_areas():
     body += cta()
     page("/service-areas/", "Service Areas | Limo & Car Service Across the Twin Cities, MN",
          "Diamond & Pearls serves Minneapolis, St. Paul, Bloomington, Edina, Eagan, Eden Prairie, Maple Grove, Plymouth, Minnetonka, Woodbury and more.",
-         body, crumbs=[("Service Areas", "/service-areas/")], og_img="hotel-arrival")
+         body, crumbs=[("Service Areas", "/service-areas/")], og_img="hotel-arrival", wp_type="CollectionPage", main={"@id": SITE_URL + "/service-areas/#list"},
+         schema=[S.item_list("/service-areas/", [(a["name"] + ", MN", f'/service-areas/{a["slug"]}/') for a in AREAS])])
     for a in AREAS:
         n = a["name"]; path = f'/service-areas/{a["slug"]}/'
         title = f"Limo Service {n} MN | Car Service & Airport Transportation in {n}"
         desc = f"Luxury limo and chauffeured car service in {n}, MN. Airport transfers to {a['airport']}, corporate travel, weddings, events and tours."
         body = hero(f"Limo & Car Service in {n}, MN", a["intro"], a["img"], f"{n}, Minnesota", f"Luxury car service in {n}")
-        svc_list = cards([(f'/{s["slug"]}/', f'{s["name"]} in {n}', s["lead"], None) for s in SERVICES], "cards text-cards")
+        svc_list = cards([(f'/{s["slug"]}/', s["name"], s["lead"], None) for s in SERVICES], "cards text-cards")
         body += f'<section class="section"><div class="wrap"><p class="eyebrow center">Services in {e(n)}</p><h2 class="center">Chauffeured Transportation in {e(n)}</h2>{svc_list}</div></section>'
         places = "".join(f"<li>{e(p)}</li>" for p in a["places"])
         body += f'''<section class="section tint"><div class="wrap two-col">
@@ -294,7 +307,8 @@ def build_areas():
                 (f"How do I book a car in {n}?", "Request a quote online with your date, pickup location and destination. We will confirm availability and send your quote.")]
         fh, fs = faq_block(faqs)
         body += fh + cta(f"Book Your Ride in {n}")
-        page(path, title, desc, body, crumbs=[("Service Areas", "/service-areas/"), (n, path)], schema=[fs], og_img=a["img"])
+        nodes = [fs, S.city_node(a)] + [S.card_service(f'/{x["slug"]}/', x["name"], x["lead"], x["slug"]) for x in SERVICES]
+        page(path, title, desc, body, crumbs=[("Service Areas", "/service-areas/"), (n, path)], schema=nodes, og_img=a["img"], spatial={"@id": f"{SITE_URL}/service-areas/{a['slug']}/#city"})
 
 def build_about():
     body = hero("About Diamond & Pearls", "A new standard for luxury transportation in the Twin Cities.", "chauffeur-smile", "About Us", "Smiling professional chauffeur")
@@ -308,7 +322,7 @@ def build_about():
     body += cta()
     page("/about/", "About Diamond & Pearls | Luxury Transportation Minneapolis",
          "Learn about Diamond & Pearls Luxury Transportation, a Minneapolis limo and chauffeured car service built on punctuality, discretion and hospitality.",
-         body, crumbs=[("About", "/about/")], og_img="chauffeur-smile")
+         body, crumbs=[("About", "/about/")], og_img="chauffeur-smile", wp_type="AboutPage")
 
 def build_faq():
     body = hero("Frequently Asked Questions", "Everything you need to know about booking luxury transportation with Diamond & Pearls.", "backseat-laptop", "FAQ", "Passenger working in the back seat of a luxury car")
@@ -331,7 +345,7 @@ def build_contact():
     </ul>
     {img("door-for-guest", "Chauffeur opening the door for a guest", "rounded")}
   </div>
-  <form class="quote-form" data-endpoint="{e(FORM_ENDPOINT)}" novalidate>
+  <form id="quote" class="quote-form" data-endpoint="{e(FORM_ENDPOINT)}" novalidate>
     <div class="row"><label>Full name<input name="name" autocomplete="name" required></label><label>Phone<input name="phone" type="tel" autocomplete="tel" required></label></div>
     <label>Email<input name="email" type="email" autocomplete="email" required></label>
     <div class="row"><label>Service<select name="service" required><option value="">Select a service</option>{opts}</select></label><label>Passengers<input name="passengers" type="number" min="1" max="60" inputmode="numeric"></label></div>
@@ -345,7 +359,7 @@ def build_contact():
   </form>
 </div></section>'''
     page("/contact/", "Get a Quote | Limo & Car Service Minneapolis | Diamond & Pearls",
-         "Request a quote for luxury limo and chauffeured car service in Minneapolis, St. Paul and the Twin Cities.", body, crumbs=[("Get a Quote", "/contact/")], og_img="door-for-guest")
+         "Request a quote for luxury limo and chauffeured car service in Minneapolis, St. Paul and the Twin Cities.", body, crumbs=[("Get a Quote", "/contact/")], og_img="door-for-guest", wp_type="ContactPage")
 
 def build_privacy():
     body = f'''<section class="section"><div class="wrap narrow prose"><h1>Privacy Policy</h1><p>Last updated {TODAY}.</p>
