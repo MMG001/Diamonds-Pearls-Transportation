@@ -91,6 +91,7 @@ def page(path, title, desc, body, crumbs=None, schema=None, og_img="hero-executi
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{e(title)}</title>
 <meta name="description" content="{e(desc)}">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <link rel="canonical" href="{url}">
 <meta property="og:type" content="website"><meta property="og:site_name" content="{e(BRAND)}">
 <meta property="og:title" content="{e(title)}"><meta property="og:description" content="{e(desc)}">
