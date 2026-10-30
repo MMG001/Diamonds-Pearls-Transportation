@@ -114,6 +114,7 @@ main>.crumbs.on-hero ol,main>.crumbs.on-hero a{color:rgba(248,244,236,.75)}
 .rate-price{font:600 2.8rem/1 var(--serif);color:var(--ink);margin:.4em 0 .5em}
 .rate-price span{display:block;font:400 .8rem/1.4 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-top:.5em}
 .rate p:last-child{color:var(--muted);margin:0}
+.rate-min{margin:2rem 0 0;font-weight:500;color:var(--ink)}
 /* features */
 .features{display:grid;grid-template-columns:repeat(3,1fr);gap:30px}
 .feature{padding-top:22px;border-top:2px solid var(--gold)}

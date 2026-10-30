@@ -16,6 +16,7 @@ SOCIAL = [("Facebook", "https://www.facebook.com/profile.php?id=61590996791920")
           ("Instagram", "https://www.instagram.com/diamondspearlsluxurytransport/")]
 
 # ---------------------------------------------------------------- RATES
+RATE_MINIMUM = "All bookings require a minimum of two hours."
 # (name, price, unit, what's included)
 RATES = [
     ("Standard", "$90", "per hour", "Includes airport transportation"),
@@ -93,7 +94,7 @@ SERVICES = [
         ],
         "points": ["Proms and homecoming", "Bachelor and bachelorette parties", "Birthdays and anniversaries", "Concerts and sporting events", "Graduations and quinceañeras", "Respectful funeral transportation"],
         "faqs": [
-            ("What is the minimum booking time for events?", "Most event bookings have a short hourly minimum. Tell us about your plans and we will recommend the right amount of time."),
+            ("What is the minimum booking time for events?", "All bookings have a two-hour minimum. Tell us about your plans and we will recommend the right amount of time."),
             ("Can we make multiple stops?", "Yes. Hourly service lets you plan dinner, photos, the venue and after-party stops all in one booking."),
         ],
     },
@@ -174,7 +175,7 @@ EVENTS = [
               "We coordinate pickups for everyone in the group so the celebration starts the moment you get in."],
      "points": ["Milestone birthdays", "Surprise pickups", "Dinner and theater", "Group nights out", "Safe ride home"],
      "faqs": [("Can you help plan a surprise?", "Yes. Tell us the plan and we will time the arrival to keep the surprise intact."),
-              ("Is there a minimum booking?", "Most celebrations book for a few hours. We will recommend the right amount of time for your plans.")]},
+              ("Is there a minimum booking?", "Yes. All bookings have a two-hour minimum, and most celebrations book for a few hours. We will recommend the right amount of time for your plans.")]},
     {"slug": "anniversary", "name": "Anniversaries", "img": "arrival",
      "title": "Anniversary Limo Service Minneapolis | Romantic Date Night Car Service",
      "desc": "Romantic anniversary and date-night car service in Minneapolis and St. Paul. Fine dining, theater and a private, chauffeured evening for two.",

@@ -376,10 +376,11 @@ def build_rates():
     tiles = "".join(f'<div class="rate"><h3>{e(n)}</h3><p class="rate-price">{e(pr)}<span>{e(u)}</span></p><p>{e(inc)}</p></div>' for n, pr, u, inc in RATES)
     call = f'<a class="btn btn-gold" href="tel:{PHONE}">Call {e(PHONE_DISPLAY)}</a>' if PHONE else ""
     body += f'''<section class="section"><div class="wrap"><p class="eyebrow center">Hourly Rates</p><h2 class="center">Our Rates</h2><div class="rates">{tiles}</div>
+<p class="rate-min center">{e(RATE_MINIMUM)}</p>
 <div class="actions center mt">{call}<a class="btn btn-ghost dark-text" href="/contact/">Request a Quote</a></div></div></section>'''
     body += cta()
     page("/rates/", "Limo Rates Minneapolis | Hourly Car Service Pricing | Diamond & Pearls",
-         "Diamond & Pearls rates: $90 per hour standard service including airport, $120 per hour corporate service including private jet. Call for group and weekly rates.",
+         "Diamond & Pearls rates: $90 per hour standard service including airport, $120 per hour corporate service including private jet. Two-hour minimum. Call for group and weekly rates.",
          body, crumbs=[("Rates", "/rates/")], og_img="executive-relax")
 
 def build_privacy():
