@@ -2,7 +2,7 @@
 """JSON-LD entity graph builder + build-time QA (Universal Schema Prompt v3.2).
 
 Facts come only from content.py. Missing facts are omitted, never invented:
-- No telephone / email / address / geo / hours / sameAs / foundingDate yet (client: "coming soon").
+- No geo / hours / foundingDate yet. Phone, email, address, social sameAs and USDOT/MnDOT come from content.py.
 - No GeoCircle: it needs real office coordinates and a radius. areaServed = State + anchor City only.
 - No AskAction: the quote form has no backend yet (FORM_ENDPOINT empty). Add it when the form is wired.
 - No Review / AggregateRating: no first-party reviews exist. Google/Yelp reviews must never be marked up.
@@ -76,6 +76,13 @@ def business():
         n["potentialAction"] = [{"@type": "CommunicateAction", "target": {"@type": "EntryPoint", "urlTemplate": f"tel:{PHONE}", "actionPlatform": ["http://schema.org/DesktopWebPlatform", "http://schema.org/MobileWebPlatform"]}}]
     if EMAIL:
         n["email"] = EMAIL
+    if ADDRESS:
+        n["address"] = {"@type": "PostalAddress", "streetAddress": ADDRESS["street"], "addressLocality": ADDRESS["city"],
+                        "addressRegion": ADDRESS["region"], "postalCode": ADDRESS["zip"], "addressCountry": ADDRESS["country"]}
+    if SOCIAL:
+        n["sameAs"] = [u for _, u in SOCIAL]
+    ids = [("USDOT Number", USDOT), ("MnDOT Number", MNDOT)]
+    n["identifier"] = [{"@type": "PropertyValue", "propertyID": k, "value": v} for k, v in ids if v]
     if FORM_ENDPOINT:
         n.setdefault("potentialAction", []).append({"@type": "AskAction", "name": "Request a quote",
             "target": {"@type": "EntryPoint", "urlTemplate": D + "/contact/#quote", "actionPlatform": ["http://schema.org/DesktopWebPlatform", "http://schema.org/MobileWebPlatform"]}})

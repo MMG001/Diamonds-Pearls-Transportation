@@ -108,6 +108,12 @@ main>.crumbs.on-hero ol,main>.crumbs.on-hero a{color:rgba(248,244,236,.75)}
 .split-text p{color:var(--muted)}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:clamp(32px,6vw,80px)}
 
+/* rates */
+.rates{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:2rem}
+.rate{background:#fff;border-radius:var(--r);padding:30px 24px;box-shadow:var(--shadow);border-top:3px solid var(--gold);text-align:center}
+.rate-price{font:600 2.8rem/1 var(--serif);color:var(--ink);margin:.4em 0 .5em}
+.rate-price span{display:block;font:400 .8rem/1.4 var(--sans);letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-top:.5em}
+.rate p:last-child{color:var(--muted);margin:0}
 /* features */
 .features{display:grid;grid-template-columns:repeat(3,1fr);gap:30px}
 .feature{padding-top:22px;border-top:2px solid var(--gold)}
@@ -162,6 +168,7 @@ main>.crumbs.on-hero ol,main>.crumbs.on-hero a{color:rgba(248,244,236,.75)}
 .site-footer a:hover{color:var(--gold-hi)}
 .site-footer em{color:var(--gold-hi);font-style:normal}
 .foot-contact{line-height:1.9}
+.foot-license{font-size:.85rem;color:rgba(248,244,236,.6)}
 .foot-base{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;border-top:1px solid rgba(201,153,63,.18);margin-top:50px;padding:22px 0;font-size:.82rem}
 .foot-base p{margin:0}
 
@@ -176,14 +183,14 @@ main>.crumbs.on-hero ol,main>.crumbs.on-hero a{color:rgba(248,244,236,.75)}
   .sub a{padding:.45em 0;font-size:.92rem;color:rgba(248,244,236,.7)}
   .nav-cta{margin-top:18px}
   .cards{grid-template-columns:repeat(2,1fr)}
-  .std-grid{grid-template-columns:repeat(2,1fr)}
+  .std-grid,.rates{grid-template-columns:repeat(2,1fr)}
   .foot-grid{grid-template-columns:1fr 1fr}
 }
 @media (max-width:760px){
   body{font-size:16px}
   .bar{min-height:72px}.brand img{height:50px}
   .site-nav{inset:72px 0 auto 0}
-  .cards,.std-grid,.features,.split,.two-col,.quote-grid,.quote-form .row{grid-template-columns:1fr}
+  .cards,.std-grid,.rates,.features,.split,.two-col,.quote-grid,.quote-form .row{grid-template-columns:1fr}
   .split.flip .split-media{order:0}
   .hero{min-height:70vh}
   .hero-home{min-height:calc(100svh - 72px)}

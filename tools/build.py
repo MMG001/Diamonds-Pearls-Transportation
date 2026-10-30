@@ -26,6 +26,12 @@ def phone_btn(cls="btn btn-ghost"):
         return f'<a class="{cls}" href="tel:{PHONE}">Call {e(PHONE_DISPLAY)}</a>'
     return ""
 
+ADDR_LINE = f'{ADDRESS["street"]}, {ADDRESS["city"]}, {ADDRESS["region"]} {ADDRESS["zip"]}'
+MAPS = "https://www.google.com/maps/search/?api=1&query=" + ADDR_LINE.replace(" ", "+").replace(",", "%2C")
+
+def social_links(sep=" &middot; "):
+    return sep.join(f'<a href="{u}" target="_blank" rel="noopener">{e(n)}</a>' for n, u in SOCIAL)
+
 def nav():
     svc = "".join(f'<li><a href="/{s["slug"]}/">{e(s["name"])}</a></li>' for s in SERVICES)
     return f'''<header class="site-header" id="top">
@@ -39,6 +45,7 @@ def nav():
         <li><a href="/tours/">Tours</a></li>
         <li><a href="/service-areas/">Service Areas</a></li>
         <li><a href="/airports/">Airports</a></li>
+        <li><a href="/rates/">Rates</a></li>
         <li><a href="/about/">About</a></li>
         <li><a href="/faq/">FAQ</a></li>
       </ul>
@@ -51,7 +58,7 @@ def footer():
     col = lambda title, items: f'<div><h3>{title}</h3><ul>' + "".join(f'<li><a href="{u}">{e(n)}</a></li>' for u, n in items) + '</ul></div>'
     services = [(f'/{s["slug"]}/', s["name"]) for s in SERVICES]
     areas = [(f'/service-areas/{a["slug"]}/', a["name"]) for a in AREAS[:8]] + [("/service-areas/", "All Service Areas")]
-    more = [(f'/airports/{a["slug"]}/', f'{a["code"]} Airport') for a in AIRPORTS] + [("/about/", "About Us"), ("/faq/", "FAQ"), ("/contact/", "Get a Quote"), ("/privacy/", "Privacy Policy")]
+    more = [(f'/airports/{a["slug"]}/', f'{a["code"]} Airport') for a in AIRPORTS] + [("/rates/", "Rates"), ("/about/", "About Us"), ("/faq/", "FAQ"), ("/contact/", "Get a Quote"), ("/privacy/", "Privacy Policy")]
     contact_phone = f'<a href="tel:{PHONE}">{e(PHONE_DISPLAY)}</a>' if PHONE else 'Phone: <em>Coming Soon</em>'
     contact_email = f'<a href="mailto:{EMAIL}">{e(EMAIL)}</a>' if EMAIL else 'Email: <em>Coming Soon</em>'
     return f'''<footer class="site-footer">
@@ -59,7 +66,8 @@ def footer():
     <div class="foot-brand">
       <img src="/assets/img/logo-520.png" alt="{e(BRAND)}" width="260" height="88" loading="lazy">
       <p>Luxury chauffeured transportation for Minneapolis, St. Paul and the Twin Cities.</p>
-      <p class="foot-contact">{contact_phone}<br>{contact_email}<br>Office: <em>Coming Soon</em></p>
+      <p class="foot-contact">{contact_phone}<br>{contact_email}<br><a href="{MAPS}" target="_blank" rel="noopener">{e(ADDRESS["street"])}<br>{e(ADDRESS["city"])}, {e(ADDRESS["region"])} {e(ADDRESS["zip"])}</a><br>{social_links()}</p>
+      <p class="foot-license">USDOT #{e(USDOT)} &middot; MnDOT #{e(MNDOT)}</p>
       <a class="btn btn-gold" href="/contact/">Request a Quote</a>
     </div>
     {col("Services", services)}
@@ -340,7 +348,9 @@ def build_contact():
     <ul class="contact-list">
       <li><strong>Phone</strong>{f'<a href="tel:{PHONE}">{e(PHONE_DISPLAY)}</a>' if PHONE else '<span>Coming Soon</span>'}</li>
       <li><strong>Email</strong>{f'<a href="mailto:{EMAIL}">{e(EMAIL)}</a>' if EMAIL else '<span>Coming Soon</span>'}</li>
-      <li><strong>Office</strong><span>Coming Soon</span></li>
+      <li><strong>Office</strong><span><a href="{MAPS}" target="_blank" rel="noopener">{e(ADDRESS["street"])}<br>{e(ADDRESS["city"])}, {e(ADDRESS["region"])} {e(ADDRESS["zip"])}</a></span></li>
+      <li><strong>Follow</strong><span>{social_links()}</span></li>
+      <li><strong>Licensed</strong><span>USDOT #{e(USDOT)}<br>MnDOT #{e(MNDOT)}</span></li>
       <li><strong>Service Area</strong><span>Minneapolis, St. Paul &amp; the Twin Cities Metro</span></li>
     </ul>
     {img("door-for-guest", "Chauffeur opening the door for a guest", "rounded")}
@@ -360,6 +370,17 @@ def build_contact():
 </div></section>'''
     page("/contact/", "Get a Quote | Limo & Car Service Minneapolis | Diamond & Pearls",
          "Request a quote for luxury limo and chauffeured car service in Minneapolis, St. Paul and the Twin Cities.", body, crumbs=[("Get a Quote", "/contact/")], og_img="door-for-guest", wp_type="ContactPage")
+
+def build_rates():
+    body = hero("Rates", "Simple hourly pricing for chauffeured transportation across Minneapolis, St. Paul and the Twin Cities.", "executive-relax", "Pricing", "Executive passenger relaxing in a luxury car")
+    tiles = "".join(f'<div class="rate"><h3>{e(n)}</h3><p class="rate-price">{e(pr)}<span>{e(u)}</span></p><p>{e(inc)}</p></div>' for n, pr, u, inc in RATES)
+    call = f'<a class="btn btn-gold" href="tel:{PHONE}">Call {e(PHONE_DISPLAY)}</a>' if PHONE else ""
+    body += f'''<section class="section"><div class="wrap"><p class="eyebrow center">Hourly Rates</p><h2 class="center">Our Rates</h2><div class="rates">{tiles}</div>
+<div class="actions center mt">{call}<a class="btn btn-ghost dark-text" href="/contact/">Request a Quote</a></div></div></section>'''
+    body += cta()
+    page("/rates/", "Limo Rates Minneapolis | Hourly Car Service Pricing | Diamond & Pearls",
+         "Diamond & Pearls rates: $90 per hour standard service including airport, $120 per hour corporate service including private jet. Call for group and weekly rates.",
+         body, crumbs=[("Rates", "/rates/")], og_img="executive-relax")
 
 def build_privacy():
     body = f'''<section class="section"><div class="wrap narrow prose"><h1>Privacy Policy</h1><p>Last updated {TODAY}.</p>
@@ -385,5 +406,5 @@ if __name__ == "__main__":
     for s in SERVICES: build_service(s)
     for x in EVENTS: build_child(x, "special-events", "Special Events")
     for x in TOURS: build_child(x, "tours", "Tours")
-    build_airports(); build_areas(); build_about(); build_faq(); build_contact(); build_privacy(); build_404(); build_meta()
+    build_airports(); build_areas(); build_about(); build_faq(); build_rates(); build_contact(); build_privacy(); build_404(); build_meta()
     print(f"Built {len(PAGES)} pages")

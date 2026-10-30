@@ -12,13 +12,13 @@ Push to `main` and Cloudflare Pages deploys automatically.
   matching title/meta/canonical, and FAQ markup not visible on the page.
 
 ### Intentionally NOT marked up (add when the client supplies the fact)
-- `telephone`, `email`, `address`, `geo`, `hasMap`, `openingHoursSpecification`, `foundingDate`, `sameAs` profiles, `hasCredential` (MN permit / USDOT).
+- `geo`, `hasMap`, `openingHoursSpecification`, `foundingDate`. (Phone, email, address, Facebook/Instagram `sameAs` and USDOT/MnDOT `identifier` are now set from `content.py`.)
 - `GeoCircle` service radius: needs real office coordinates + radius. Until then `areaServed` = Minnesota + Minneapolis.
 - `AskAction`: the quote form has no backend. Set `FORM_ENDPOINT` in `content.py` and the action appears automatically.
   Form fields (map 1:1 to the backend): name*, phone*, email*, service*, passengers, date*, time, pickup, dropoff, details; honeypot `company_website`.
 - Reviews: Google/Yelp reviews may be displayed, but never marked up as Review/AggregateRating.
 
-Add phone/email in `tools/content.py` (`PHONE`, `EMAIL`); call buttons, footer and schema update everywhere on the next build.
+Contact details live in `tools/content.py` (`PHONE`, `EMAIL`, `ADDRESS`, `SOCIAL`, `USDOT`, `MNDOT`); rates are in `RATES` and render at `/rates/`.
 
 ## Cache busting
 CSS/JS URLs carry `?v=<sha256 content hash>`, so `/assets/css` and `/assets/js` are cached for 1 year (`_headers`).

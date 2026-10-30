@@ -4,10 +4,25 @@
 BRAND = "Diamond & Pearls Luxury Transportation"
 SHORT = "Diamond & Pearls"
 SITE_URL = "https://diamonds-pearls-transportation.pages.dev"
-PHONE = ""            # coming soon - when set, call buttons appear site-wide
-PHONE_DISPLAY = "Phone Coming Soon"
-EMAIL = ""            # coming soon
+PHONE = "+16124600783"          # when set, call buttons appear site-wide
+PHONE_DISPLAY = "(612) 460-0783"
+EMAIL = "tamcatlund@outlook.com"
 FORM_ENDPOINT = ""    # set to a form-handler URL to start receiving quote requests
+
+ADDRESS = {"street": "2457 Dianna Lane", "city": "Little Canada", "region": "MN", "zip": "55117", "country": "US"}
+USDOT = "7703947"
+MNDOT = "385910"
+SOCIAL = [("Facebook", "https://www.facebook.com/profile.php?id=61590996791920"),
+          ("Instagram", "https://www.instagram.com/diamondspearlsluxurytransport/")]
+
+# ---------------------------------------------------------------- RATES
+# (name, price, unit, what's included)
+RATES = [
+    ("Standard", "$90", "per hour", "Includes airport transportation"),
+    ("Corporate", "$120", "per hour", "Includes private jet transportation"),
+    ("Group Rates", "Call", "for pricing", "Call us for group rates"),
+    ("Weekly Rates", "Call", "for pricing", "Call us for weekly rates"),
+]
 
 # ---------------------------------------------------------------- SERVICE HUBS
 # key: (url, nav label)
