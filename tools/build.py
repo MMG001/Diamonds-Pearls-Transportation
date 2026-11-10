@@ -36,7 +36,7 @@ def nav():
     svc = "".join(f'<li><a href="/{s["slug"]}/">{e(s["name"])}</a></li>' for s in SERVICES)
     return f'''<header class="site-header" id="top">
   <div class="bar wrap">
-    <a class="brand" href="/" aria-label="{e(BRAND)} home"><img src="/assets/img/logo-520.png" alt="{e(BRAND)}" width="520" height="175"></a>
+    <a class="brand" href="/" aria-label="{e(BRAND)} home"><img src="/assets/img/logo-520.png" alt="{e(BRAND)}" width="520" height="270"></a>
     <button class="menu-toggle" aria-expanded="false" aria-controls="site-nav"><span></span><span></span><span></span><span class="sr">Menu</span></button>
     <nav id="site-nav" class="site-nav" aria-label="Main">
       <ul>
@@ -65,7 +65,7 @@ def footer():
     return f'''<footer class="site-footer">
   <div class="wrap foot-grid">
     <div class="foot-brand">
-      <img src="/assets/img/logo-520.png" alt="{e(BRAND)}" width="260" height="88" loading="lazy">
+      <img src="/assets/img/logo-520.png" alt="{e(BRAND)}" width="260" height="135" loading="lazy">
       <p>Luxury chauffeured transportation for Minneapolis, St. Paul and the Twin Cities.</p>
       <p class="foot-contact">{contact_phone}<br>{contact_email}<br><a href="{MAPS}" target="_blank" rel="noopener">{e(ADDRESS["street"])}<br>{e(ADDRESS["city"])}, {e(ADDRESS["region"])} {e(ADDRESS["zip"])}</a><br>{social_links()}</p>
       <p class="foot-license">USDOT #{e(USDOT)} &middot; MnDOT #{e(MNDOT)}</p>
