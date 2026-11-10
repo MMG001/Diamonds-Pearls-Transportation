@@ -166,7 +166,7 @@ EVENTS = [
      "points": ["Photo-stop pickups", "Dinner and dance drop-offs", "Parent-approved itinerary", "Strict no-alcohol policy for minors", "Professional chauffeurs"],
      "faqs": [("Can parents book prom transportation?", "Yes, and we encourage it. The person who books receives the full itinerary and confirmation."),
               ("When should we book for prom?", "Prom weekends in April and May fill quickly. Book as early as possible, ideally 6 to 8 weeks ahead.")]},
-    {"slug": "bachelor-party", "name": "Bachelor Parties", "img": "night-drive",
+    {"slug": "bachelor-party", "name": "Bachelor Parties", "img": "suburban-bachelor",
      "title": "Bachelor Party Limo Minneapolis | Bachelor Party Transportation",
      "desc": "Bachelor party transportation in Minneapolis and St. Paul. Bar hopping, steakhouse dinners, games and nightlife with a professional chauffeur.",
      "h1": "Bachelor Party Transportation",
