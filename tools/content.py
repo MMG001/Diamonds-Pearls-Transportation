@@ -216,7 +216,7 @@ EVENTS = [
      "points": ["Ceremony drop-off and pickup", "Family transportation", "Celebration dinners", "Out-of-town guest transfers"],
      "faqs": [("Can you pick up family from the airport for graduation?", "Yes. Many families combine airport transfers with graduation-day transportation."),
               ("Which schools do you serve?", "We serve high schools, colleges and universities throughout the Twin Cities metro and greater Minnesota.")]},
-    {"slug": "quinceanera", "name": "Quinceañeras", "img": "door-for-guest",
+    {"slug": "quinceanera", "name": "Quinceañeras", "img": "suburban-quince",
      "title": "Quinceañera Limo Service Minneapolis | Quinceañera Transportation",
      "desc": "Elegant quinceañera transportation in Minneapolis and St. Paul. Church, photos and reception with a professional chauffeur.",
      "h1": "Quinceañera Transportation",
