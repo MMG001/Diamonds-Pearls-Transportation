@@ -156,7 +156,7 @@ SERVICES = [
 
 # --------------------------------------------------------- SPECIAL EVENT PAGES
 EVENTS = [
-    {"slug": "prom-homecoming", "name": "Prom & Homecoming", "img": "door-open",
+    {"slug": "prom-homecoming", "name": "Prom & Homecoming", "img": "door-open", "card_img": "suburban-prom",
      "title": "Prom Limo Minneapolis | Homecoming Limo Service Twin Cities",
      "desc": "Safe, stylish prom and homecoming limo service in Minneapolis and St. Paul. Professional chauffeurs, parent-friendly policies and on-time pickups.",
      "h1": "Prom & Homecoming Limo Service",

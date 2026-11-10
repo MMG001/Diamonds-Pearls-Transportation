@@ -235,9 +235,9 @@ def build_service(s):
         body = body.replace('class="rounded" src="/assets/img/' + s["expect_img"], 'class="rounded" style="aspect-ratio:16/9" src="/assets/img/' + s["expect_img"])
     sub = ""
     if s["slug"] == "special-events":
-        sub = cards([(f'/special-events/{x["slug"]}/', x["name"], x["lead"], x["img"]) for x in EVENTS])
+        sub = cards([(f'/special-events/{x["slug"]}/', x["name"], x["lead"], x.get("card_img", x["img"])) for x in EVENTS])
     elif s["slug"] == "tours":
-        sub = cards([(f'/tours/{x["slug"]}/', x["name"], x["lead"], x["img"]) for x in TOURS])
+        sub = cards([(f'/tours/{x["slug"]}/', x["name"], x["lead"], x.get("card_img", x["img"])) for x in TOURS])
     elif s["slug"] == "airport-transportation":
         sub = cards([(f'/airports/{a["slug"]}/', f'{a["name"]} ({a["code"]})', a["lead"], None) for a in AIRPORTS], "cards text-cards")
     if sub:
