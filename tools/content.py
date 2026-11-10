@@ -136,7 +136,7 @@ SERVICES = [
         ],
     },
     {
-        "slug": "group-charter", "name": "Group & Charter", "img": "group-arrival",
+        "slug": "group-charter", "name": "Group & Charter", "img": "group-arrival", "card_img": "suburban-family",
         "title": "Group Transportation & Shuttle Service Minneapolis | Charter Service",
         "desc": "Group transportation, event shuttles and charter service in Minneapolis and St. Paul for corporate groups, weddings, teams, conventions and medical appointments.",
         "h1": "Group Transportation & Charter Service",

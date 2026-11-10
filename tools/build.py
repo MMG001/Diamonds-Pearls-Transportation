@@ -185,7 +185,7 @@ def standard_block(dark=True):
 
 # ------------------------------------------------------------ pages
 def build_home():
-    svc_cards = cards([(f'/{s["slug"]}/', s["name"], s["lead"], s["img"]) for s in SERVICES])
+    svc_cards = cards([(f'/{s["slug"]}/', s["name"], s["lead"], s.get("card_img", s["img"])) for s in SERVICES])
     ev = chips([(f'/special-events/{x["slug"]}/', x["name"]) for x in EVENTS])
     tr = chips([(f'/tours/{x["slug"]}/', x["name"]) for x in TOURS])
     ar = chips([(f'/service-areas/{a["slug"]}/', a["name"]) for a in AREAS])
@@ -216,7 +216,7 @@ def build_home():
 
 def build_services_hub():
     body = hero("Our Chauffeured Transportation Services", "Luxury ground transportation for every reason to travel in Minneapolis, St. Paul and the Twin Cities.", "chauffeur-team", "Services", "Chauffeurs standing beside a luxury sedan")
-    body += f'<section class="section"><div class="wrap">{cards([(f"/{s["slug"]}/", s["name"], s["lead"], s["img"]) for s in SERVICES])}</div></section>'
+    body += f'<section class="section"><div class="wrap">{cards([(f"/{s["slug"]}/", s["name"], s["lead"], s.get("card_img", s["img"])) for s in SERVICES])}</div></section>'
     body += standard_block() + cta()
     page("/services/", "Limo & Car Services Minneapolis | Chauffeured Transportation Services",
          "Explore our Minneapolis limo and car services: airport transportation, corporate travel, weddings, special events, tours and group charters.",
