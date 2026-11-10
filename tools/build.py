@@ -269,7 +269,7 @@ def build_child(x, parent_slug, parent_name):
     page(path, x["title"], x["desc"], body, crumbs=[(parent_name, f"/{parent_slug}/"), (x["name"], path)], schema=nodes, og_img=x["img"], main=S.sid(path))
 
 def build_airports():
-    body = hero("Airport Car Service Across the Twin Cities", "Commercial and private aviation transfers with flight tracking and professional chauffeurs.", "private-jet", "Airports", "Luxury car parked beside a private jet")
+    body = hero("Airport Car Service Across the Twin Cities", "Commercial and private aviation transfers with flight tracking and professional chauffeurs.", "suburban-airport", "Airports", f"Chauffeur greeting a traveler beside a black {VEHICLE} at the airport curb")
     body += f'<section class="section"><div class="wrap">{cards([(f"/airports/{a["slug"]}/", f"{a["name"]} ({a["code"]})", a["lead"], None) for a in AIRPORTS], "cards text-cards")}</div></section>' + cta()
     page("/airports/", "Airport Car Service Minneapolis | MSP, STP, FCM & ANE Transportation",
          "Chauffeured airport transportation at MSP, St. Paul Downtown (STP), Flying Cloud (FCM) and Anoka County-Blaine (ANE) airports.",
