@@ -19,6 +19,24 @@ SOCIAL = [("Facebook", "https://www.facebook.com/profile.php?id=61590996791920")
 RATE_MINIMUM = "All bookings require a minimum of two hours."
 VEHICLE = "2026 Chevrolet Suburban"
 VEHICLE_COLOR = "black"
+FLEET_URL = "/fleet/suburban-suv/"
+# What every ride includes (shown on the vehicle page)
+VEHICLE_INCLUDES = [
+    ("Professional Chauffeur", "A courteous, discreet, professionally attired driver who knows the Twin Cities."),
+    ("Flight Tracking", "Airport pickups follow your flight, so your chauffeur adjusts to early or late arrivals."),
+    ("Meet-and-Greet at MSP", "On request, your chauffeur meets you at baggage claim and helps with your luggage."),
+    ("Detailed Before Every Ride", "The Suburban is cleaned and detailed before each trip."),
+    ("Clear Pricing", "Simple hourly rates quoted up front, with no surprises when your trip is over."),
+    ("Door-to-Door Service", "Picked up and dropped off exactly where you need to be."),
+]
+VEHICLE_FAQS = [
+    ("What vehicle will I be riding in?", f"Every ride is in our {VEHICLE_COLOR} {VEHICLE}, a full-size luxury SUV."),
+    ("How much does the Suburban cost per hour?", "Standard service is $90 per hour and includes airport transportation. Corporate service is $120 per hour and includes private jet transportation."),
+    ("Is there a minimum booking?", RATE_MINIMUM),
+    ("Can I book the Suburban for an airport pickup?", "Yes. Airport transportation is included in the standard rate, and every airport pickup includes flight tracking."),
+    ("Can I book the Suburban for a wedding or special event?", "Yes. The Suburban is available for weddings, proms, anniversaries, nights out and other special events."),
+    ("What if my group needs more room?", "Call us for group rates and we will plan the right number of trips to keep everyone on time."),
+]
 # (name, price, unit, what's included)
 RATES = [
     ("Standard", "$90", "per hour", "Includes airport transportation"),

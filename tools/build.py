@@ -45,6 +45,7 @@ def nav():
         <li><a href="/tours/">Tours</a></li>
         <li><a href="/service-areas/">Service Areas</a></li>
         <li><a href="/airports/">Airports</a></li>
+        <li><a href="{FLEET_URL}">Fleet</a></li>
         <li><a href="/rates/">Rates</a></li>
         <li><a href="/about/">About</a></li>
         <li><a href="/faq/">FAQ</a></li>
@@ -58,7 +59,7 @@ def footer():
     col = lambda title, items: f'<div><h3>{title}</h3><ul>' + "".join(f'<li><a href="{u}">{e(n)}</a></li>' for u, n in items) + '</ul></div>'
     services = [(f'/{s["slug"]}/', s["name"]) for s in SERVICES]
     areas = [(f'/service-areas/{a["slug"]}/', a["name"]) for a in AREAS[:8]] + [("/service-areas/", "All Service Areas")]
-    more = [(f'/airports/{a["slug"]}/', f'{a["code"]} Airport') for a in AIRPORTS] + [("/rates/", "Rates"), ("/about/", "About Us"), ("/faq/", "FAQ"), ("/contact/", "Get a Quote"), ("/privacy/", "Privacy Policy")]
+    more = [(f'/airports/{a["slug"]}/', f'{a["code"]} Airport') for a in AIRPORTS] + [(FLEET_URL, "Our Vehicle"), ("/rates/", "Rates"), ("/about/", "About Us"), ("/faq/", "FAQ"), ("/contact/", "Get a Quote"), ("/privacy/", "Privacy Policy")]
     contact_phone = f'<a href="tel:{PHONE}">{e(PHONE_DISPLAY)}</a>' if PHONE else 'Phone: <em>Coming Soon</em>'
     contact_email = f'<a href="mailto:{EMAIL}">{e(EMAIL)}</a>' if EMAIL else 'Email: <em>Coming Soon</em>'
     return f'''<footer class="site-footer">
@@ -88,7 +89,7 @@ def page(path, title, desc, body, crumbs=None, schema=None, og_img="hero-executi
     crumb_html = ""
     if crumbs:
         items = [("Home", "/")] + crumbs
-        crumb_html = f'<nav class="crumbs wrap{" on-hero" if body.lstrip().startswith('<section class="hero') else ""}" aria-label="Breadcrumb"><ol>' + "".join(
+        crumb_html = f'<nav class="crumbs wrap{" on-hero" if body.lstrip().startswith('<section class="hero') else " on-dark" if body.lstrip().startswith('<section class="veh-head') else ""}" aria-label="Breadcrumb"><ol>' + "".join(
             (f'<li><a href="{u}">{e(n)}</a></li>' if i < len(items) - 1 else f'<li aria-current="page">{e(n)}</li>') for i, (n, u) in enumerate(items)) + '</ol></nav>'
     doc = f'''<!doctype html>
 <html lang="en">
@@ -372,13 +373,49 @@ def build_contact():
     page("/contact/", "Get a Quote | Limo & Car Service Minneapolis | Diamond & Pearls",
          "Request a quote for luxury limo and chauffeured car service in Minneapolis, St. Paul and the Twin Cities.", body, crumbs=[("Get a Quote", "/contact/")], og_img="door-for-guest", wp_type="ContactPage")
 
+def pic(name, alt, w, h, cls="", eager=False, sizes="100vw"):
+    return (f'<img class="{cls}" src="/assets/img/{name}-960.webp" '
+            f'srcset="/assets/img/{name}-960.webp 960w, /assets/img/{name}-1920.webp 1920w" sizes="{sizes}" '
+            f'alt="{e(alt)}" width="{w}" height="{h}" {"fetchpriority=\"high\"" if eager else "loading=\"lazy\""} decoding="async">')
+
+def build_fleet():
+    std, corp = RATES[0], RATES[1]
+    specs = [("Standard", f"{std[1]}", "per hour, airport included"), ("Corporate", f"{corp[1]}", "per hour, private jet included"),
+             ("Minimum", "2 hrs", "on every booking"), ("Model Year", "2026", f"{VEHICLE_COLOR} exterior")]
+    spec_html = "".join(f'<div class="spec"><dt>{e(k)}</dt><dd>{e(v)}<span>{e(n)}</span></dd></div>' for k, v, n in specs)
+    body = f'''<section class="veh-head"><div class="wrap">
+  <p class="eyebrow">Vehicle</p>
+  <h1>{e(VEHICLE)}</h1>
+  <p class="veh-tag">Full-Size Luxury SUV</p>
+  <p class="lead">Our {e(VEHICLE_COLOR)} {e(VEHICLE)}, chauffeured across Minneapolis, St. Paul and the Twin Cities for airport runs, business travel, weddings and nights out.</p>
+  <dl class="specs">{spec_html}</dl>
+  <div class="actions"><a class="btn btn-gold" href="/contact/">Request a Quote</a>{phone_btn()}</div>
+</div></section>
+<section class="veh-hero"><div class="wrap">{pic("suburban-city", f"Black {VEHICLE} driving through the city at dusk", 1920, 1081, "veh-hero-img", eager=True, sizes="(max-width: 1232px) 100vw, 1200px")}</div></section>
+<section class="section"><div class="wrap split">
+  <div class="split-text"><p class="eyebrow">About the Vehicle</p><h2>Room, Comfort and a Polished Arrival</h2>
+    <p>The Suburban is the vehicle behind every Diamond &amp; Pearls ride. It is a full-size SUV with generous room for passengers and luggage, a quiet cabin and a commanding, elegant presence at the curb.</p>
+    <p>Clients book it for MSP and private jet transfers, executive travel between meetings, wedding days, proms and evenings out. You ride in the back; your chauffeur handles the route, the timing and the doors.</p>
+    <p>Service is by the hour with a two-hour minimum. Tell us your date, times and stops and we will confirm availability and send your quote.</p></div>
+  <div class="split-media">{pic("suburban-wedding", f"Chauffeur waiting beside a black {VEHICLE} as a bride and groom leave their venue", 1920, 1440, "rounded", sizes="(max-width: 760px) 100vw, 50vw")}</div>
+</div></section>'''
+    items = "".join(f'<div class="std"><span class="gem" aria-hidden="true"></span><h3>{e(t)}</h3><p>{e(d)}</p></div>' for t, d in VEHICLE_INCLUDES)
+    body += f'<section class="section dark"><div class="wrap"><p class="eyebrow center">Included With Every Ride</p><h2 class="center">What Comes Standard</h2><div class="std-grid std-3">{items}</div></div></section>'
+    fh, fs = faq_block(VEHICLE_FAQS, "Suburban Questions")
+    body += fh
+    body += f'''<section class="section tint"><div class="wrap center"><p class="eyebrow">Where It Takes You</p><h2>Book the Suburban For</h2>{chips([(f'/{s["slug"]}/', s["name"]) for s in SERVICES] + [("/rates/", "Rates")])}</div></section>'''
+    body += cta("Reserve the Suburban", "Tell us about your trip and we will send a personalized quote.")
+    page(FLEET_URL, f"{VEHICLE} | Chauffeured Luxury SUV Minneapolis | Diamond & Pearls",
+         f"Ride in our {VEHICLE_COLOR} {VEHICLE}. Chauffeured luxury SUV service in Minneapolis and St. Paul from $90 per hour, two-hour minimum.",
+         body, crumbs=[("Fleet", FLEET_URL)], schema=[fs], og_img="suburban-city")
+
 def build_rates():
     body = hero("Rates", "Simple hourly pricing for chauffeured transportation across Minneapolis, St. Paul and the Twin Cities.", "executive-relax", "Pricing", "Executive passenger relaxing in a luxury car")
     tiles = "".join(f'<div class="rate"><h3>{e(n)}</h3><p class="rate-price">{e(pr)}<span>{e(u)}</span></p><p>{e(inc)}</p></div>' for n, pr, u, inc in RATES)
     call = f'<a class="btn btn-gold" href="tel:{PHONE}">Call {e(PHONE_DISPLAY)}</a>' if PHONE else ""
     body += f'''<section class="section"><div class="wrap"><p class="eyebrow center">Hourly Rates</p><h2 class="center">Our Rates</h2><div class="rates">{tiles}</div>
 <p class="rate-min center">{e(RATE_MINIMUM)}</p>
-<p class="center">All rides are in our {e(VEHICLE_COLOR)} {e(VEHICLE)}.</p>
+<p class="center">All rides are in our <a href="{FLEET_URL}">{e(VEHICLE_COLOR)} {e(VEHICLE)}</a>.</p>
 <div class="actions center mt">{call}<a class="btn btn-ghost dark-text" href="/contact/">Request a Quote</a></div></div></section>'''
     body += cta()
     page("/rates/", "Limo Rates Minneapolis | Hourly Car Service Pricing | Diamond & Pearls",
@@ -409,5 +446,5 @@ if __name__ == "__main__":
     for s in SERVICES: build_service(s)
     for x in EVENTS: build_child(x, "special-events", "Special Events")
     for x in TOURS: build_child(x, "tours", "Tours")
-    build_airports(); build_areas(); build_about(); build_faq(); build_rates(); build_contact(); build_privacy(); build_404(); build_meta()
+    build_airports(); build_areas(); build_about(); build_faq(); build_rates(); build_fleet(); build_contact(); build_privacy(); build_404(); build_meta()
     print(f"Built {len(PAGES)} pages")
