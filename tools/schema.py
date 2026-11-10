@@ -64,7 +64,7 @@ def business():
         "@type": "LocalBusiness", "@id": BIZ["@id"],
         "additionalType": WIKI + "Limousine",
         "name": BRAND, "alternateName": SHORT,
-        "url": D + "/", "logo": D + "/assets/img/logo-520.png", "image": D + "/assets/img/hero-executive-1920.webp",
+        "url": D + "/", "logo": D + "/assets/img/dp-logo-520.png", "image": D + "/assets/img/hero-executive-1920.webp",
         "description": "Luxury limousine and chauffeured car service in Minneapolis, St. Paul and the Twin Cities metro.",
         "areaServed": [STATE, {"@type": "City", "name": "Minneapolis", "sameAs": WIKI + "Minneapolis"}],
         "knowsAbout": [thing("Limousine", "Limousine"), thing("Chauffeur", "Chauffeur"), thing("Vehicle for hire", "Vehicle_for_hire")],

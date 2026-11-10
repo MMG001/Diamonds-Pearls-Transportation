@@ -176,7 +176,7 @@ EVENTS = [
      "points": ["Hourly as-directed service", "Downtown and North Loop nightlife", "Sports and concert drop-offs", "Multiple pickups", "Safe ride home"],
      "faqs": [("Can we make as many stops as we want?", "Yes. With hourly service you can stop wherever you like within your booked time."),
               ("Can you pick up guests from several locations?", "Yes. Add extra pickups to your itinerary when you book.")]},
-    {"slug": "bachelorette-party", "name": "Bachelorette Parties", "img": "door-sunset",
+    {"slug": "bachelorette-party", "name": "Bachelorette Parties", "img": "suburban-bachelorette",
      "title": "Bachelorette Party Limo Minneapolis | Bachelorette Transportation",
      "desc": "Bachelorette party limo and luxury transportation in Minneapolis and St. Paul. Wine tours, dinner, nightlife and a safe ride home for the whole party.",
      "h1": "Bachelorette Party Transportation",
