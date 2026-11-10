@@ -246,7 +246,7 @@ EVENTS = [
      "points": ["Door drop-off at the venue", "Pre-arranged pickup point", "Overtime-friendly scheduling", "Tailgate and dinner stops", "Group pickups"],
      "faqs": [("Where will you pick us up after the event?", "We confirm a pickup point before the event and your chauffeur will text you the exact location."),
               ("What if the game goes into overtime?", "We build extra time into game-day bookings so overtime is never a problem.")]},
-    {"slug": "funeral", "name": "Funeral Transportation", "img": "guest-exit",
+    {"slug": "funeral", "name": "Funeral Transportation", "img": "guest-exit", "card_img": "suburban-funeral",
      "title": "Funeral Limo Service Minneapolis | Funeral Transportation Twin Cities",
      "desc": "Dignified funeral transportation in Minneapolis and St. Paul. Family transport between home, the service, the cemetery and the reception.",
      "h1": "Funeral Transportation",
