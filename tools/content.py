@@ -49,7 +49,7 @@ RATES = [
 # key: (url, nav label)
 SERVICES = [
     {
-        "slug": "airport-transportation", "name": "Airport Transportation", "img": "private-jet",
+        "slug": "airport-transportation", "name": "Airport Transportation", "img": "suburban-airport",
         "title": "Airport Limo & Car Service Minneapolis | MSP Airport Transportation",
         "desc": "Chauffeured airport transportation to and from MSP and Twin Cities private airfields. Flight tracking, meet-and-greet and door-to-door luxury car service.",
         "h1": "Airport Transportation in Minneapolis & St. Paul",
@@ -84,7 +84,7 @@ SERVICES = [
         ],
     },
     {
-        "slug": "wedding-transportation", "name": "Wedding Transportation", "img": "arrival",
+        "slug": "wedding-transportation", "name": "Wedding Transportation", "img": "suburban-wedding",
         "title": "Wedding Limo Service Minneapolis | Wedding Transportation Twin Cities",
         "desc": "Elegant wedding transportation in Minneapolis and St. Paul. Bridal party transport, guest shuttles and a grand getaway car, planned to your timeline.",
         "h1": "Wedding Transportation in the Twin Cities",
