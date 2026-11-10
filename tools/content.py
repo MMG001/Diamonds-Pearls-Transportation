@@ -102,7 +102,7 @@ SERVICES = [
         ],
     },
     {
-        "slug": "special-events", "name": "Special Events", "img": "door-sunset", "expect_img": "suburban-side",
+        "slug": "special-events", "name": "Special Events", "img": "suburban-events", "expect_img": "suburban-side",
         "title": "Special Event Limo Service Minneapolis | Party & Celebration Transportation",
         "desc": "Limo and luxury car service for proms, bachelor and bachelorette parties, birthdays, anniversaries, concerts, games and every celebration in the Twin Cities.",
         "h1": "Special Event Transportation",
