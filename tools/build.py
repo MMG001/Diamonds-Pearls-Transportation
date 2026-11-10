@@ -322,7 +322,8 @@ def build_about():
     body = hero("About Diamond & Pearls", "A new standard for luxury transportation in the Twin Cities.", "chauffeur-smile", "About Us", "Smiling professional chauffeur")
     body += split("Built on Polish and Reliability", [
         f"{BRAND} was founded with a simple idea: every ride should feel as refined as the occasion it serves. Like a diamond and a pearl, we believe great service combines strength with grace.",
-        "We serve executives, families, couples and groups across Minneapolis, St. Paul and the Twin Cities metro, with a focus on punctuality, discretion and genuine hospitality."],
+        "We serve executives, families, couples and groups across Minneapolis, St. Paul and the Twin Cities metro, with a focus on punctuality, discretion and genuine hospitality.",
+        f"You ride in our {VEHICLE_COLOR} {VEHICLE}, a full-size luxury SUV with room for passengers and luggage."],
         "chauffeur-smile", "Professional chauffeur in the driver's seat", eyebrow="Our Story")
     body += standard_block()
     body += split("Our Promise to You", ["We confirm every detail before your ride, track every flight, and treat every passenger like a VIP. If something matters to you, it matters to us."],
@@ -377,6 +378,7 @@ def build_rates():
     call = f'<a class="btn btn-gold" href="tel:{PHONE}">Call {e(PHONE_DISPLAY)}</a>' if PHONE else ""
     body += f'''<section class="section"><div class="wrap"><p class="eyebrow center">Hourly Rates</p><h2 class="center">Our Rates</h2><div class="rates">{tiles}</div>
 <p class="rate-min center">{e(RATE_MINIMUM)}</p>
+<p class="center">All rides are in our {e(VEHICLE_COLOR)} {e(VEHICLE)}.</p>
 <div class="actions center mt">{call}<a class="btn btn-ghost dark-text" href="/contact/">Request a Quote</a></div></div></section>'''
     body += cta()
     page("/rates/", "Limo Rates Minneapolis | Hourly Car Service Pricing | Diamond & Pearls",

@@ -17,6 +17,8 @@ SOCIAL = [("Facebook", "https://www.facebook.com/profile.php?id=61590996791920")
 
 # ---------------------------------------------------------------- RATES
 RATE_MINIMUM = "All bookings require a minimum of two hours."
+VEHICLE = "2026 Chevrolet Suburban"
+VEHICLE_COLOR = "black"
 # (name, price, unit, what's included)
 RATES = [
     ("Standard", "$90", "per hour", "Includes airport transportation"),
@@ -439,6 +441,7 @@ GENERAL_FAQS = [
     ("Do you track flights for airport pickups?", "Yes. Every airport pickup includes flight tracking, so your chauffeur adjusts to early or late arrivals."),
     ("How far in advance should I book?", "We recommend at least 24 hours for airport and corporate rides, and several weeks to several months for weddings, proms and holidays."),
     ("Can I make changes to my reservation?", "Yes. Contact us as early as possible with changes and we will do our best to accommodate them."),
+    ("What vehicle will I ride in?", f"You ride in our {VEHICLE_COLOR} {VEHICLE}, a full-size luxury SUV with room for passengers and luggage."),
     ("Is alcohol allowed in the vehicle?", "Passengers 21 and over may enjoy beverages where permitted by law. Alcohol is never allowed for passengers under 21."),
     ("What is your cancellation policy?", "Cancellation terms depend on the type of booking and will be included with your quote and confirmation."),
 ]
