@@ -230,7 +230,9 @@ def build_service(s):
         pass
     secs = "".join(f'<div class="feature"><h3>{e(t)}</h3><p>{e(p)}</p></div>' for t, p in s["sections"])
     body += f'<section class="section"><div class="wrap"><div class="features">{secs}</div></div></section>'
-    body += split(f'What to Expect', ["Every booking includes a professional chauffeur, a clean late-model luxury vehicle and a confirmed itinerary. Here is what is included:"], "door-hand", "Chauffeur opening a car door", points=s["points"], eyebrow=s["name"])
+    body += split(f'What to Expect', ["Every booking includes a professional chauffeur, a clean late-model luxury vehicle and a confirmed itinerary. Here is what is included:"], s.get("expect_img", "door-hand"), f"Black {VEHICLE} parked outside a glass office tower" if s.get("expect_img") else "Chauffeur opening a car door", points=s["points"], eyebrow=s["name"])
+    if s.get("expect_img"):
+        body = body.replace('class="rounded" src="/assets/img/' + s["expect_img"], 'class="rounded" style="aspect-ratio:16/9" src="/assets/img/' + s["expect_img"])
     sub = ""
     if s["slug"] == "special-events":
         sub = cards([(f'/special-events/{x["slug"]}/', x["name"], x["lead"], x["img"]) for x in EVENTS])
