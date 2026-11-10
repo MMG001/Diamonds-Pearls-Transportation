@@ -45,6 +45,45 @@ RATES = [
     ("Weekly Rates", "Call", "for pricing", "Call us for weekly rates"),
 ]
 
+# ---------------------------------------------------------------- IMAGE ALT TEXT
+# One accurate description per photo, used wherever the photo appears.
+LOGO_ALT = "Diamonds & Pearls Luxury Transportation logo"
+ALT = {
+    "suburban-city": "Black 2026 Chevrolet Suburban driving through downtown at dusk",
+    "suburban-wedding": "Chauffeur standing beside a black Chevrolet Suburban as a bride and groom leave their wedding venue",
+    "suburban-hotel": "Black Chevrolet Suburban parked at a hotel entrance in the evening",
+    "suburban-airport": "Chauffeur greeting a traveler with luggage beside a black Chevrolet Suburban at the airport curb",
+    "suburban-family": "Chauffeur holding the door of a black Chevrolet Suburban for a family with luggage",
+    "suburban-side": "Side view of a black Chevrolet Suburban parked outside a glass office tower",
+    "suburban-prom": "Six teens in prom dresses and tuxedos standing in front of a black Chevrolet Suburban outside a ballroom",
+    "suburban-bachelor": "Four groomsmen in suits laughing beside a black Chevrolet Suburban at night",
+    "suburban-bachelorette": "Four women dressed for a night out laughing on the sidewalk next to a black Chevrolet Suburban",
+    "suburban-birthday": "Friends with gold 40th birthday balloons and gifts standing behind a black Chevrolet Suburban",
+    "suburban-anniversary": "Couple in evening wear leaving a hotel as a chauffeur waits beside a black Chevrolet Suburban",
+    "suburban-graduation": "Five graduates in caps and gowns holding diplomas next to a black Chevrolet Suburban",
+    "suburban-nightout": "Black Chevrolet Suburban on a wet downtown street lit by restaurant and theater signs",
+    "suburban-events": "Chauffeur in a black suit standing beside a black Chevrolet Suburban at a venue entrance at sunset",
+    "suburban-quince": "Two girls in pink and teal quinceañera gowns and tiaras posing beside a black Chevrolet Suburban",
+    "suburban-funeral": "Chauffeur holding the door of a black Chevrolet Suburban for a family dressed in black outside a chapel",
+    "arrival": "Couple walking toward a black luxury sedan outside a modern office building",
+    "backseat-laptop": "Businessman on a phone call working on a laptop in the back seat of a luxury car",
+    "chauffeur-smile": "Smiling chauffeur in a suit sitting at the wheel of a luxury car",
+    "chauffeur-team": "Two chauffeurs in suits standing in front of a black luxury sedan",
+    "chauffeur-waiting": "Chauffeur in a suit waiting beside a black luxury sedan outside an office building",
+    "door-for-guest": "Chauffeur holding a car door open for a smiling woman",
+    "door-hand": "Chauffeur in a dark suit opening the rear door of a black luxury car",
+    "door-handle": "Close-up of a chauffeur's hand on the door handle of a luxury car",
+    "door-open": "Chauffeur holding open the rear door of a black luxury car with leather seats",
+    "door-sunset": "Chauffeur's hand opening a luxury car door in warm evening light",
+    "executive-relax": "Smiling executive reading a newspaper in the back seat of a luxury car",
+    "group-arrival": "Group of four professionals walking past a black luxury sedan outside an office building",
+    "guest-exit": "Chauffeur greeting a woman as she steps out of the back seat of a car",
+    "hero-executive": "Executive on a phone call in the back seat of a luxury car",
+    "hotel-arrival": "Chauffeur standing beside a black luxury sedan at a hotel entrance",
+    "night-drive": "Black luxury sedan driving through the city at night",
+    "private-jet": "Chauffeur standing beside a black sedan on the tarmac near a private jet",
+}
+
 # ---------------------------------------------------------------- SERVICE HUBS
 # key: (url, nav label)
 SERVICES = [

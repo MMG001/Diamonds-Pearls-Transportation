@@ -17,6 +17,7 @@ e = html.escape
 SVC = {s["slug"]: s for s in SERVICES}
 
 def img(name, alt, cls="", eager=False, sizes="(max-width: 800px) 100vw, 50vw"):
+    alt = ALT[name]  # every photo has one accurate description; build fails if one is missing
     return (f'<img class="{cls}" src="/assets/img/{name}-960.webp" '
             f'srcset="/assets/img/{name}-960.webp 960w, /assets/img/{name}-1920.webp 1920w" sizes="{sizes}" '
             f'alt="{e(alt)}" width="960" height="640" {"fetchpriority=\"high\"" if eager else "loading=\"lazy\""} decoding="async">')
@@ -36,7 +37,7 @@ def nav():
     svc = "".join(f'<li><a href="/{s["slug"]}/">{e(s["name"])}</a></li>' for s in SERVICES)
     return f'''<header class="site-header" id="top">
   <div class="bar wrap">
-    <a class="brand" href="/" aria-label="{e(BRAND)} home"><img src="/assets/img/dp-logo-520.png" alt="{e(BRAND)}" width="520" height="270"></a>
+    <a class="brand" href="/" aria-label="{e(BRAND)} home"><img src="/assets/img/dp-logo-520.webp" alt="{e(LOGO_ALT)}" width="520" height="270"></a>
     <button class="menu-toggle" aria-expanded="false" aria-controls="site-nav"><span></span><span></span><span></span><span class="sr">Menu</span></button>
     <nav id="site-nav" class="site-nav" aria-label="Main">
       <ul>
@@ -65,7 +66,7 @@ def footer():
     return f'''<footer class="site-footer">
   <div class="wrap foot-grid">
     <div class="foot-brand">
-      <img src="/assets/img/dp-logo-520.png" alt="{e(BRAND)}" width="260" height="135" loading="lazy">
+      <img src="/assets/img/dp-logo-520.webp" alt="{e(LOGO_ALT)}" width="260" height="135" loading="lazy">
       <p>Luxury chauffeured transportation for Minneapolis, St. Paul and the Twin Cities.</p>
       <p class="foot-contact">{contact_phone}<br>{contact_email}<br><a href="{MAPS}" target="_blank" rel="noopener">{e(ADDRESS["street"])}<br>{e(ADDRESS["city"])}, {e(ADDRESS["region"])} {e(ADDRESS["zip"])}</a><br>{social_links()}</p>
       <p class="foot-license">USDOT #{e(USDOT)} &middot; MnDOT #{e(MNDOT)}</p>
@@ -378,6 +379,7 @@ def build_contact():
          "Request a quote for luxury limo and chauffeured car service in Minneapolis, St. Paul and the Twin Cities.", body, crumbs=[("Get a Quote", "/contact/")], og_img="door-for-guest", wp_type="ContactPage")
 
 def pic(name, alt, w, h, cls="", eager=False, sizes="100vw"):
+    alt = ALT[name]
     return (f'<img class="{cls}" src="/assets/img/{name}-960.webp" '
             f'srcset="/assets/img/{name}-960.webp 960w, /assets/img/{name}-1920.webp 1920w" sizes="{sizes}" '
             f'alt="{e(alt)}" width="{w}" height="{h}" {"fetchpriority=\"high\"" if eager else "loading=\"lazy\""} decoding="async">')
