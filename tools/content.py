@@ -186,7 +186,7 @@ EVENTS = [
      "points": ["Wine and brewery tours", "Dinner and nightlife routes", "Group pickups", "Photo stops", "Safe ride home"],
      "faqs": [("Can we decorate the vehicle?", "Light, non-damaging decorations are welcome. Let us know what you have planned when you book."),
               ("Can you combine a wine tour with a night out?", "Yes. Many groups start with an afternoon tasting and end with dinner and dancing in the city.")]},
-    {"slug": "birthday", "name": "Birthdays", "img": "chauffeur-team",
+    {"slug": "birthday", "name": "Birthdays", "img": "suburban-birthday",
      "title": "Birthday Limo Service Minneapolis | Birthday Party Transportation",
      "desc": "Birthday limo and luxury car service in Minneapolis and St. Paul for milestone birthdays, surprise parties, dinners and nights out.",
      "h1": "Birthday Celebration Transportation",
