@@ -119,7 +119,7 @@ SERVICES = [
         ],
     },
     {
-        "slug": "tours", "name": "Tours", "img": "night-drive",
+        "slug": "tours", "name": "Tours", "img": "suburban-hotel",
         "title": "Wine, Brewery & City Tours Minneapolis | Chauffeured Tour Transportation",
         "desc": "Chauffeured wine tours, brewery tours, distillery tours, pub crawls, holiday light tours and fall color tours across Minneapolis, St. Paul and Minnesota.",
         "h1": "Chauffeured Tours Across Minnesota",

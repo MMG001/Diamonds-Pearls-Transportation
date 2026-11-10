@@ -204,7 +204,7 @@ def build_home():
     body += split("Every Occasion, Perfectly Timed", ["From prom night to a 50th anniversary, from a bachelorette weekend to a game at U.S. Bank Stadium, we plan the route around your celebration so you can enjoy every moment."],
                   "door-sunset", "Chauffeur opening a luxury car door at sunset", eyebrow="Special Events") .replace("</div>\n</div></section>", ev + "</div>\n</div></section>")
     body += split("Tours Worth Savoring", ["Wine, brewery and distillery tours, Irish pub crawls, holiday light tours and fall color drives. Your chauffeur drives; your group enjoys."],
-                  "night-drive", "Black luxury sedan driving through the city at night", flip=True, eyebrow="Tours").replace("</div>\n</div></section>", tr + "</div>\n</div></section>")
+                  "suburban-city", f"Black {VEHICLE} driving through the city at dusk", flip=True, eyebrow="Tours").replace("</div>\n</div></section>", tr + "</div>\n</div></section>").replace('class="rounded"', 'class="rounded" style="object-position:88% 50%"')
     body += f'''<section class="section tint"><div class="wrap two-col">
   <div><p class="eyebrow">Airports</p><h2>Airport Car Service</h2><p>Flight-tracked pickups at Minneapolis-St. Paul International and the metro's private aviation airports.</p>{ap}</div>
   <div><p class="eyebrow">Service Areas</p><h2>Serving the Twin Cities &amp; Beyond</h2><p>Minneapolis, St. Paul, the suburbs and long-distance trips across Minnesota.</p>{ar}</div>
