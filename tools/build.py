@@ -258,7 +258,9 @@ def build_service(s):
 def build_child(x, parent_slug, parent_name):
     path = f'/{parent_slug}/{x["slug"]}/'
     body = hero(x["h1"], x["lead"], x["img"], parent_name, x["name"])
-    body += split(f'{x["name"]} in Minneapolis & St. Paul', x["body"], x["img"], x["name"], points=x["points"], eyebrow=parent_name)
+    body += split(f'{x["name"]} in Minneapolis & St. Paul', x["body"], x.get("card_img", x["img"]), x["name"], points=x["points"], eyebrow=parent_name)
+    if x.get("card_img"):
+        body = body.replace('class="rounded" src="/assets/img/' + x["card_img"], 'class="rounded" style="aspect-ratio:3/2" src="/assets/img/' + x["card_img"])
     siblings = EVENTS if parent_slug == "special-events" else TOURS
     body += f'<section class="section tint"><div class="wrap center"><h2>More {e(parent_name)}</h2>{chips([(f"/{parent_slug}/{y["slug"]}/", y["name"]) for y in siblings if y is not x])}</div></section>'
     fh, fs = faq_block(x["faqs"])
