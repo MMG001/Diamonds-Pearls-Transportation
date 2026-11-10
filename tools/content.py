@@ -3,7 +3,7 @@
 
 BRAND = "Diamond & Pearls Luxury Transportation"
 SHORT = "Diamond & Pearls"
-SITE_URL = "https://diamonds-pearls-transportation.pages.dev"
+SITE_URL = "https://diamondsandpearlstransportation.com"
 PHONE = "+16124600783"          # when set, call buttons appear site-wide
 PHONE_DISPLAY = "(612) 460-0783"
 EMAIL = "tamcatlund@outlook.com"
